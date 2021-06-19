@@ -16,8 +16,21 @@ struct Game: GameCompatible {
 }
 
 extension Game {
-
+    
     func defineFirstAttackingPlayer(players: [Player]) -> Player? {
-        nil
+
+        var attackingPlayer = Player()
+        var buffer: Int = 0
+        
+        players.forEach{ player in
+            player.hand?.forEach{ card in
+                let cardValue = Value.allCases.firstIndex(where: {$0 == card.value})!
+                if card.isTrump && cardValue < buffer{
+                    buffer = cardValue
+                    attackingPlayer = player
+                }
+            }
+        }
+        return attackingPlayer
     }
 }
